@@ -27,7 +27,7 @@ class ProductUser(db.Model):
 
 @app.route('/')
 def index():
-    return 'hello'
+    return 'home page'
 
 
 if __name__ == '__main__':
