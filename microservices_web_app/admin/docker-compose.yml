@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    restart: always
     command: 'python manage.py runserver 0.0.0.0:8000'
     ports:
       - 8000:8000
@@ -16,6 +17,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    restart: always
     command: 'python consumer.py'
     depends_on:
       - db
