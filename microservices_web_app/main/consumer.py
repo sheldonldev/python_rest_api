@@ -13,15 +13,17 @@ def callback(ch, method, properties, body):
     try:
         data = json.loads(body)
         print(data)
-    except: pass
+    except: return
 
     if properties.content_type == 'product_created':
+        print("Creating...")
         product = Product(id=data['id'], title=data['title'], image=data['image'])
         db.session.add(product)
         db.session.commit()
         print("Product created")
 
     elif properties.content_type == 'product_updated':
+        print("Updating...")
         product = Product.query.get(data['id'])
         product.title = data['title']
         product.image = data['image']
@@ -29,12 +31,13 @@ def callback(ch, method, properties, body):
         print("Product updated")
 
     elif properties.content_type == 'product_deleted':
+        print("Deleting...")
         product = Product.query.get(data)
         db.session.delete(product)
         db.session.commit()
         print("Product deleted")
 
-channel.basic_consume(queue='main', on_message_callback=callback)
+channel.basic_consume(queue='main', on_message_callback=callback, auto_ack=True)
 
 print('Started Consuming')
 
